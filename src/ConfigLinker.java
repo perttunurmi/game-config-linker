@@ -1,3 +1,5 @@
+package src;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -5,12 +7,57 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Scanner;
+import src.utils.*;
 
+// TODO: Add GUI
+// TODO: Add unit tests
+// TODO: Make the program to work with multiple games
+
+/*
+ * Steam game config manager
+ * Author: Perttu Nurmi
+ * Github: perttunurmi
+ * Email: perttu.nurmi@gmail.com
+ * Version: 0.1
+ * License: MIT
+ * Program that links multiple Steam accounts to use the same config files
+ */
 public class ConfigLinker {
-    private static String DefaultConfigPath = "C:\\Program Files (x86)\\Steam\\userdata";
+    private static String ConfigPath = "C:\\Program Files (x86)\\Steam\\userdata";
     private static String AccountID = ""; // Steam AccountID, can be found at https://steamdb.info/calculator/
     private static String GameID = "730"; // GameID, default 730 = csgo/cs2
+    private static File[] Accounts;
 
+    private static void getAllAccounts() throws InvalidConfigPathException, InvalidAccountIdException {
+        // Check for in invalid attributes
+        if (!AccountID.matches("^[0-9]+")) {
+            System.out.println("AccountID can only contain numbers");
+            AccountID = "";
+            System.exit(3);
+
+        } else if (ConfigPath.trim().isEmpty()) {
+            throw new src.utils.InvalidConfigPathException("ConfigPath is not set");
+        }
+
+        else {
+            File config = new File(ConfigPath);
+            File accountPath = new File(ConfigPath, AccountID);
+
+            if (!config.exists() || !config.isDirectory()) {
+                throw new src.utils.InvalidConfigPathException("Config directory doesn't exist or is not a directory");
+            }
+
+            if (!accountPath.exists() || !accountPath.isDirectory()) {
+                throw new src.utils.AccountIdIsInvalidException("AccountID is invalid");
+            }
+
+            Accounts = config.listFiles();
+        }
+    }
+
+    /*
+     * For running interactively in the terminal
+     */
     private static void interactiveMode() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -21,7 +68,7 @@ public class ConfigLinker {
                 "Enter the path to the Steam userdata folder: (defaults to C:\\Program Files (x86)\\Steam\\userdata\\)");
         String userdatafolder = scanner.nextLine().trim();
         if (!userdatafolder.isEmpty()) {
-            DefaultConfigPath = userdatafolder;
+            ConfigPath = userdatafolder;
         }
 
         while (AccountID.isEmpty()) {
@@ -42,6 +89,9 @@ public class ConfigLinker {
         scanner.close();
     }
 
+    /*
+     * Allows user to enter config path and accountid as arguments
+     */
     private static void expertMode(String args[]) {
 
         AccountID = args[0];
@@ -55,11 +105,11 @@ public class ConfigLinker {
         }
 
         if (args.length > 1) {
-            DefaultConfigPath = args[1];
+            ConfigPath = args[1];
         }
 
         System.out.println("AccountID: " + AccountID);
-        System.out.println("Steam userdata folder: " + DefaultConfigPath);
+        System.out.println("Steam userdata folder: " + ConfigPath);
     }
 
     private static void makeBackup(File src, File dest) throws IOException {
@@ -92,36 +142,16 @@ public class ConfigLinker {
         }
     }
 
+    /*
+     * Removes all backups
+     * Helps you to get rid of backups of backups of backups...
+     */
     @SuppressWarnings("unused")
     private static void RemoveOldBackups() {
     }
 
-    private static void MakeLinks() {
-        System.out.println("Creating links for account: " + AccountID + "...");
-        File userdata = new File(DefaultConfigPath);
-
-        if (!userdata.exists()) {
-            System.out.println("Userdata folder does not exist: " + userdata.getAbsolutePath());
-            System.exit(1);
-        }
-
-        System.out.println("Userdata folder exists: " + userdata.getAbsolutePath());
-
-        File[] accounts = userdata.listFiles();
-        for (File account : accounts) {
-
-            File destination = new File(account.getAbsolutePath() + ".bak");
-            try {
-                makeBackup(account, destination);
-                System.out.println("Created backup for account " + account.getAbsolutePath());
-            } catch (Exception e) {
-                System.out.println("Error when creating a backup " + account.getAbsolutePath());
-                continue;
-            }
-
-
-
-        }
+    @SuppressWarnings("unused")
+    private static void makeLinks() {
     }
 
     public static void main(String[] args) {
@@ -131,16 +161,32 @@ public class ConfigLinker {
         } else {
             expertMode(args);
         }
+        // At this point ConfigPath and AccountID should be set
 
-        MakeLinks();
-
-        System.out.println("press CTRL+C to exit");
-        while (true) {
+        // Backup all configs
+        for (File account : Accounts) {
+            File destination = new File(account.getAbsolutePath() + ".bak");
             try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                makeBackup(account, destination);
+                System.out.println("Created backup for account " + account.getAbsolutePath());
+            } catch (Exception e) {
+                System.out.println("Error when creating a backup " + account.getAbsolutePath());
+                continue;
             }
+        }
+
+        try {
+            getAllAccounts();
+        } catch (InvalidConfigPathException e) {
+            System.out.println(e.getMessage());
+            System.exit(1);
+        } catch (InvalidAccountIdException e) {
+            System.out.println(e.getMessage());
+            System.exit(2);
+        }
+
+        System.out.println("Press CTRL+C to exit");
+        while (true) {
         }
     }
 
