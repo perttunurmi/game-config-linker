@@ -1,4 +1,4 @@
-package main;
+package config.cloner;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,8 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Scanner;
-import utils.*;
-import gui.*;
+import config.utils.*;
 
 // TODO: Add GUI
 // TODO: Add unit tests
@@ -37,7 +36,7 @@ public class ConfigLinker {
             System.exit(3);
 
         } else if (ConfigPath.trim().isEmpty()) {
-            throw new utils.InvalidConfigPathException("ConfigPath is not set");
+            throw new InvalidConfigPathException("ConfigPath is not set");
         }
 
         else {
@@ -45,12 +44,12 @@ public class ConfigLinker {
             File accountPath = new File(ConfigPath, AccountID);
 
             if (!config.exists() || !config.isDirectory()) {
-                throw new utils.InvalidConfigPathException(
+                throw new InvalidConfigPathException(
                         "Directory " + config + " doesn't exist or is not a directory");
             }
 
             if (!accountPath.exists() || !accountPath.isDirectory()) {
-                throw new utils.InvalidAccountIdException("Directory " + accountPath + " doesn't exist");
+                throw new InvalidAccountIdException("Directory " + accountPath + " doesn't exist");
             }
 
             Accounts = config.listFiles();
@@ -179,10 +178,10 @@ public class ConfigLinker {
 
         try {
             getAllAccounts();
-        } catch (utils.InvalidConfigPathException e) {
+        } catch (InvalidConfigPathException e) {
             System.out.println(e.getMessage());
             System.exit(1);
-        } catch (utils.InvalidAccountIdException e) {
+        } catch (InvalidAccountIdException e) {
             System.out.println(e.getMessage());
             System.exit(2);
         }

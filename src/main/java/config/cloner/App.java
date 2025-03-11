@@ -1,10 +1,12 @@
 package config.cloner;
 
+import config.cloner.ConfigLinker;
+
 /**
  * Hello world!
  */
 public class App {
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        ConfigLinker.main(args);
     }
 }
