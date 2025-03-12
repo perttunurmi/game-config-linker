@@ -12,7 +12,6 @@ import utils.*;
 /*
  * Steam game config manager
  * Author: Perttu Nurmi
- * Github: perttunurmi
  * Email: perttu.nurmi@gmail.com
  * Program that links multiple Steam accounts to use the same config files
  */
@@ -30,6 +29,15 @@ public class ConfigLinker {
             ExpertMode.expertMode(args, ConfigPath);
         }
         // At this point ConfigPath and AccountID should be set
+        try {
+            Accounts = AccountManager.getAllAccounts();
+        } catch (InvalidConfigPathException error) {
+            System.out.println(error.getMessage());
+            System.exit(1);
+        } catch (InvalidAccountIdException error) {
+            System.out.println(error.getMessage());
+            System.exit(2);
+        }
 
         // Backup all configs
         for (File account : Accounts) {
@@ -43,46 +51,8 @@ public class ConfigLinker {
             }
         }
 
-        try {
-            getAllAccounts();
-        } catch (InvalidConfigPathException e) {
-            System.out.println(e.getMessage());
-            System.exit(1);
-        } catch (InvalidAccountIdException e) {
-            System.out.println(e.getMessage());
-            System.exit(2);
-        }
-
         System.out.println("Press CTRL+C to exit");
         while (true) {
-        }
-    }
-
-    private static void getAllAccounts() throws InvalidConfigPathException, InvalidAccountIdException {
-        // Check for in invalid attributes
-        if (!AccountID.matches("^[0-9]+")) {
-            System.out.println("AccountID can only contain numbers");
-            AccountID = "";
-            System.exit(3);
-
-        } else if (ConfigPath.trim().isEmpty()) {
-            throw new InvalidConfigPathException("ConfigPath is not set");
-        }
-
-        else {
-            File config = new File(ConfigPath);
-            File accountPath = new File(ConfigPath, AccountID);
-
-            if (!config.exists() || !config.isDirectory()) {
-                throw new InvalidConfigPathException(
-                        "Directory " + config + " doesn't exist or is not a directory");
-            }
-
-            if (!accountPath.exists() || !accountPath.isDirectory()) {
-                throw new InvalidAccountIdException("Directory " + accountPath + " doesn't exist");
-            }
-
-            Accounts = config.listFiles();
         }
     }
 
