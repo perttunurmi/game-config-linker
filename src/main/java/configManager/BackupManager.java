@@ -10,12 +10,7 @@ import java.io.OutputStream;
 /**
  * BackupManager creates and removes backups of configs
  */
-public class BackupManager {
-    private final String ConfigPath;
-
-    BackupManager(final String ConfigPath) {
-        this.ConfigPath = ConfigPath;
-    }
+public final class BackupManager {
 
     /**
      * Copies the folder and all of it's contents recursively
@@ -24,7 +19,7 @@ public class BackupManager {
      * @param dest destination for the copy
      * @throws IOException
      */
-    public void copyFolderRecursively(final File src, final File dest) throws IOException {
+    public static void copyFolderRecursively(final File src, final File dest) throws IOException {
         if (src.isDirectory()) {
             if (!dest.exists()) {
                 dest.mkdir();
@@ -58,8 +53,7 @@ public class BackupManager {
      * Removes all backups
      * Helps you to get rid of backups of backups of backups...
      */
-    public void RemoveOldBackups() {
-        final File userdataFolder = new File(this.ConfigPath);
+    public static void removeOldBackups(final File userdataFolder) {
         for (final File folder : userdataFolder.listFiles()) {
             if (folder.getAbsolutePath().endsWith(".bak")) {
                 folder.delete();
@@ -72,8 +66,8 @@ public class BackupManager {
      * Does a backup for every file/folder in a directory.
      * Note: will also create backups for backups
      */
-    public void MakeNewBackup(final File src) {
-        File dest = new File(src.getAbsolutePath() + ".bak");
+    public static void makeNewBackup(final File src) {
+        final File dest = new File(src.getAbsolutePath() + ".bak");
 
         try {
             copyFolderRecursively(src, dest);

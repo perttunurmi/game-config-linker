@@ -1,16 +1,9 @@
 package configManager;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
-import userInterface.cli.ExpertMode;
-import userInterface.cli.InteractiveMode;
-import utils.InvalidAccountIdException;
-import utils.InvalidConfigPathException;
+import userInterface.cli.*;
+import utils.*;
 
 // TODO: Add GUI
 // TODO: Add unit tests
@@ -28,6 +21,42 @@ public class ConfigLinker {
     private static String AccountID = ""; // Steam AccountID, can be found at https://steamdb.info/calculator/
     private static String GameID = "730"; // GameID, default 730 = csgo/cs2
     private static File[] Accounts;
+
+    public static void main(String[] args) {
+
+        if (args.length == 0) {
+            InteractiveMode.interactiveMode();
+        } else {
+            ExpertMode.expertMode(args, ConfigPath);
+        }
+        // At this point ConfigPath and AccountID should be set
+
+        // Backup all configs
+        for (File account : Accounts) {
+            File destination = new File(account.getAbsolutePath() + ".bak");
+            try {
+                BackupManager.makeNewBackup(account);
+                System.out.println("Created backup for account " + account.getAbsolutePath());
+            } catch (Exception e) {
+                System.out.println("Error when creating a backup " + account.getAbsolutePath());
+                continue;
+            }
+        }
+
+        try {
+            getAllAccounts();
+        } catch (InvalidConfigPathException e) {
+            System.out.println(e.getMessage());
+            System.exit(1);
+        } catch (InvalidAccountIdException e) {
+            System.out.println(e.getMessage());
+            System.exit(2);
+        }
+
+        System.out.println("Press CTRL+C to exit");
+        while (true) {
+        }
+    }
 
     private static void getAllAccounts() throws InvalidConfigPathException, InvalidAccountIdException {
         // Check for in invalid attributes
@@ -59,42 +88,6 @@ public class ConfigLinker {
 
     @SuppressWarnings("unused")
     private static void makeLinks() {
-    }
-
-    public static void main(String[] args) {
-
-        if (args.length == 0) {
-            InteractiveMode.interactiveMode();
-        } else {
-            ExpertMode.expertMode(args, ConfigPath);
-        }
-        // At this point ConfigPath and AccountID should be set
-
-        // Backup all configs
-        for (File account : Accounts) {
-            File destination = new File(account.getAbsolutePath() + ".bak");
-            try {
-                BackupManager.makeBackup(account, destination);
-                System.out.println("Created backup for account " + account.getAbsolutePath());
-            } catch (Exception e) {
-                System.out.println("Error when creating a backup " + account.getAbsolutePath());
-                continue;
-            }
-        }
-
-        try {
-            getAllAccounts();
-        } catch (InvalidConfigPathException e) {
-            System.out.println(e.getMessage());
-            System.exit(1);
-        } catch (InvalidAccountIdException e) {
-            System.out.println(e.getMessage());
-            System.exit(2);
-        }
-
-        System.out.println("Press CTRL+C to exit");
-        while (true) {
-        }
     }
 
 }
