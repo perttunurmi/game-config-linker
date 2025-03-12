@@ -6,8 +6,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Scanner;
+
 import config.utils.*;
+import config.cli.*;
 
 // TODO: Add GUI
 // TODO: Add unit tests
@@ -56,63 +57,6 @@ public class ConfigLinker {
         }
     }
 
-    /*
-     * For running interactively in the terminal
-     */
-    private static void interactiveMode() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println(
-                "Enter the path to the Steam userdata folder: (defaults to C:\\Program Files (x86)\\Steam\\userdata\\)");
-        String userdatafolder = scanner.nextLine().trim();
-        if (!userdatafolder.isEmpty()) {
-            ConfigPath = userdatafolder;
-        }
-
-        while (AccountID.isEmpty()) {
-            System.out.println(
-                    "Enter the main accounts AccountID: (can be found at https://steamdb.info/calculator/)");
-            AccountID = scanner.nextLine().trim();
-
-            if (AccountID.isEmpty()) {
-                System.out.println("AccountID cannot be empty.");
-            }
-
-            if (!AccountID.matches("^[0-9]+") && !AccountID.isEmpty()) {
-                System.out.println("AccountID can only contain numbers");
-                AccountID = "";
-            }
-        }
-
-        scanner.close();
-    }
-
-    /*
-     * Allows user to enter config path and accountid as arguments
-     */
-    private static void expertMode(String args[]) {
-
-        AccountID = args[0];
-
-        if (!AccountID.matches("^[0-9]+") && !AccountID.isEmpty()) {
-            System.out.println("AccountID can only contain numbers");
-            AccountID = "";
-            System.out.println(
-                    "Use the syntax: [ProgramName AccountID pathToSteamUserdataFolder(optional)]");
-            System.exit(2);
-        }
-
-        if (args.length > 1) {
-            ConfigPath = args[1];
-        }
-
-        System.out.println("AccountID: " + AccountID);
-        System.out.println("Steam userdata folder: " + ConfigPath);
-    }
-
     private static void makeBackup(File src, File dest) throws IOException {
         if (src.isDirectory()) {
             if (!dest.exists()) {
@@ -158,9 +102,9 @@ public class ConfigLinker {
     public static void main(String[] args) {
 
         if (args.length == 0) {
-            interactiveMode();
+            InteractiveMode.interactiveMode();
         } else {
-            expertMode(args);
+            ExpertMode.expertMode(args, ConfigPath);
         }
         // At this point ConfigPath and AccountID should be set
 
