@@ -1,9 +1,7 @@
-package config.cloner;
-
-import config.cloner.ConfigLinker;
+package configManager;
 
 /**
- * Hello world!
+ * Entry point for the program
  */
 public class App {
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package config.cloner;
+package configManager;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,8 +7,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import config.utils.*;
-import config.cli.*;
+import userInterface.cli.ExpertMode;
+import userInterface.cli.InteractiveMode;
+import utils.InvalidAccountIdException;
+import utils.InvalidConfigPathException;
 
 // TODO: Add GUI
 // TODO: Add unit tests
@@ -19,8 +21,6 @@ import config.cli.*;
  * Author: Perttu Nurmi
  * Github: perttunurmi
  * Email: perttu.nurmi@gmail.com
- * Version: 0.1
- * License: MIT
  * Program that links multiple Steam accounts to use the same config files
  */
 public class ConfigLinker {
@@ -57,44 +57,6 @@ public class ConfigLinker {
         }
     }
 
-    private static void makeBackup(File src, File dest) throws IOException {
-        if (src.isDirectory()) {
-            if (!dest.exists()) {
-                dest.mkdir();
-            }
-
-            String files[] = src.list();
-            for (String file : files) {
-                File srcFile = new File(src, file);
-                File destFile = new File(dest, file);
-                makeBackup(srcFile, destFile);
-            }
-
-        } else if (!src.isDirectory()) {
-            InputStream in = new FileInputStream(src);
-            OutputStream out = new FileOutputStream(dest);
-            try {
-                byte[] buffer = new byte[1024];
-                int length;
-                while ((length = in.read(buffer)) > 0) {
-                    out.write(buffer, 0, length);
-                }
-
-            } finally {
-                in.close();
-                out.close();
-            }
-        }
-    }
-
-    /*
-     * Removes all backups
-     * Helps you to get rid of backups of backups of backups...
-     */
-    @SuppressWarnings("unused")
-    private static void RemoveOldBackups() {
-    }
-
     @SuppressWarnings("unused")
     private static void makeLinks() {
     }
@@ -112,7 +74,7 @@ public class ConfigLinker {
         for (File account : Accounts) {
             File destination = new File(account.getAbsolutePath() + ".bak");
             try {
-                makeBackup(account, destination);
+                BackupManager.makeBackup(account, destination);
                 System.out.println("Created backup for account " + account.getAbsolutePath());
             } catch (Exception e) {
                 System.out.println("Error when creating a backup " + account.getAbsolutePath());

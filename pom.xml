@@ -69,7 +69,7 @@
             <configuration>
                 <archive>
                     <manifest>
-                        <mainClass>config.cloner.App</mainClass>  <!-- Change to your main class -->
+                        <mainClass>configManager.App</mainClass>  <!-- Change to your main class -->
                     </manifest>
                 </archive>
             </configuration>

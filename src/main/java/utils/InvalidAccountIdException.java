@@ -1,4 +1,4 @@
-package config.utils;
+package utils;
 
 public class InvalidAccountIdException extends Exception {
     public InvalidAccountIdException(String errorMessage) {

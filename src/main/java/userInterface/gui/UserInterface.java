@@ -1,4 +1,4 @@
-package config.gui;
+package userInterface.gui;
 
 // Java program using label (swing)
 import java.io.*;
