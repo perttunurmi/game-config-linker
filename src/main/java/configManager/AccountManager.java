@@ -8,7 +8,7 @@ public class AccountManager {
     private static String ConfigPath;
 
     public static File[] getAllAccounts() throws InvalidConfigPathException, InvalidAccountIdException {
-        InputValidator.validateAccountId(AccountID, ConfigPath);
+        InputValidator.validateAccountFolder(AccountID, ConfigPath);
 
         File config = new File(ConfigPath);
         File accountPath = new File(ConfigPath, AccountID);

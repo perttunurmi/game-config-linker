@@ -51,7 +51,8 @@ public final class BackupManager {
 
     /**
      * Removes all backups
-     * Helps you to get rid of backups of backups of backups...
+     * Helps you to get rid of backups of backups of backups and
+     * also required so you can create symbolic links
      */
     public static void removeOldBackups(final File userdataFolder) {
         for (final File folder : userdataFolder.listFiles()) {

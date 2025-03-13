@@ -45,7 +45,7 @@ public class ConfigLinker {
             try {
                 BackupManager.makeNewBackup(account);
                 System.out.println("Created backup for account " + account.getAbsolutePath());
-            } catch (Exception e) {
+            } catch (Exception error) {
                 System.out.println("Error when creating a backup " + account.getAbsolutePath());
                 continue;
             }
