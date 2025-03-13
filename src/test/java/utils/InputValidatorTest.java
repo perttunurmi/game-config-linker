@@ -6,6 +6,8 @@ import java.io.File;
 import org.junit.jupiter.api.Test;
 
 public class InputValidatorTest {
+  private final String projectDir = System.getProperty("user.dir");
+  private final File testDir = new File(projectDir + "/src/test/resources/testfolder");
 
   @Test
   public void validateAccountIdException() {
@@ -33,8 +35,6 @@ public class InputValidatorTest {
 
   @Test
   public void validateAccountFolderNoException() {
-    final String projectDir = System.getProperty("user.dir");
-    final File testDir = new File(projectDir + "/src/test/resources/testfolder");
 
     // Directory is for testing and should always exist
     assertTrue(testDir.isDirectory());

@@ -5,7 +5,6 @@ import userInterface.cli.*;
 import utils.*;
 
 // TODO: Add GUI
-// TODO: Add unit tests
 // TODO: Make the program to work with multiple games
 
 /*
@@ -23,11 +22,8 @@ public class ConfigLinker {
 
   public static void main(final String[] args) {
 
-    if (args.length == 0) {
-      InteractiveMode.interactiveMode();
-    } else {
-      ExpertMode.expertMode(args, ConfigPath);
-    }
+    InteractiveMode.interactiveMode();
+
     // At this point ConfigPath and AccountID should be set
     try {
       Accounts = AccountManager.getAllAccounts();
@@ -41,7 +37,6 @@ public class ConfigLinker {
 
     // Backup all configs
     for (final File account : Accounts) {
-      final File destination = new File(account.getAbsolutePath() + ".bak");
       try {
         BackupManager.makeNewBackup(account);
         System.out.println("Created backup for account " + account.getAbsolutePath());

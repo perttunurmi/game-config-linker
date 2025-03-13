@@ -6,11 +6,11 @@ import java.io.File;
 import org.junit.jupiter.api.Test;
 
 public class BackupManagerTest {
+  private final String projectDir = System.getProperty("user.dir");
+  private final File testDir = new File(projectDir + "/src/test/resources/testfolder");
 
   @Test
   public void removeBackupsTest() {
-    final String projectDir = System.getProperty("user.dir");
-    final File testDir = new File(projectDir + "/src/test/resources/testfolder");
 
     BackupManager.removeOldBackups(testDir);
 
@@ -26,8 +26,6 @@ public class BackupManagerTest {
   @Test
   public void makeNewBackupTest() {
     final String accountID = "73936547";
-    final String projectDir = System.getProperty("user.dir");
-    final File testDir = new File(projectDir + "/src/test/resources/testfolder");
     final File testAccountDir = new File(testDir, accountID);
 
     BackupManager.makeNewBackup(testAccountDir);
