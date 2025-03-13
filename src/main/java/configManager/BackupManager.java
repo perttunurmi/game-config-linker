@@ -50,7 +50,7 @@ public final class BackupManager {
   public static void deleteFolderRecursively(final File file) throws IOException {
     for (final File child : file.listFiles()) {
       if (child.isDirectory()) {
-        System.out.println("deleting test bakcup..." + child);
+        System.out.println("Deleting folder: " + child);
         deleteFolderRecursively(child);
       } else {
         if (!child.delete()) {

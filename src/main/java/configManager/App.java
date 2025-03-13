@@ -76,10 +76,14 @@ public class App {
       if (!account.getPath().contains(AccountID)) {
         File gameConfigCopy = new File(account, GameID);
         if (gameConfigCopy.exists()) {
-          try {
-            BackupManager.deleteFolderRecursively(gameConfigCopy);
-          } catch (IOException error) {
-            error.printStackTrace();
+          if (LinkManager.isSymbolicLink(gameConfigCopy)) {
+            LinkManager.removeLink(gameConfigCopy);
+          } else {
+            try {
+              BackupManager.deleteFolderRecursively(gameConfigCopy);
+            } catch (IOException error) {
+              error.printStackTrace();
+            }
           }
 
           LinkManager.createLink(gameDir, gameConfigCopy);
