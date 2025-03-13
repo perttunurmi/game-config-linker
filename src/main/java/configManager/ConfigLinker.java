@@ -1,7 +1,6 @@
 package configManager;
 
 import java.io.File;
-
 import userInterface.cli.*;
 import utils.*;
 
@@ -16,48 +15,46 @@ import utils.*;
  * Program that links multiple Steam accounts to use the same config files
  */
 public class ConfigLinker {
-    private static String ConfigPath = "C:\\Program Files (x86)\\Steam\\userdata";
-    private static String AccountID = ""; // Steam AccountID, can be found at https://steamdb.info/calculator/
-    private static String GameID = "730"; // GameID, default 730 = csgo/cs2
-    private static File[] Accounts;
+  private static String ConfigPath = "C:\\Program Files (x86)\\Steam\\userdata";
+  private static String AccountID =
+      ""; // Steam AccountID, can be found at https://steamdb.info/calculator/
+  private static String GameID = "730"; // GameID, default 730 = csgo/cs2
+  private static File[] Accounts;
 
-    public static void main(final String[] args) {
+  public static void main(final String[] args) {
 
-        if (args.length == 0) {
-            InteractiveMode.interactiveMode();
-        } else {
-            ExpertMode.expertMode(args, ConfigPath);
-        }
-        // At this point ConfigPath and AccountID should be set
-        try {
-            Accounts = AccountManager.getAllAccounts();
-        } catch (final InvalidConfigPathException error) {
-            System.out.println(error.getMessage());
-            System.exit(1);
-        } catch (final InvalidAccountIdException error) {
-            System.out.println(error.getMessage());
-            System.exit(2);
-        }
-
-        // Backup all configs
-        for (final File account : Accounts) {
-            final File destination = new File(account.getAbsolutePath() + ".bak");
-            try {
-                BackupManager.makeNewBackup(account);
-                System.out.println("Created backup for account " + account.getAbsolutePath());
-            } catch (final Exception error) {
-                System.out.println("Error when creating a backup " + account.getAbsolutePath());
-                continue;
-            }
-        }
-
-        System.out.println("Press CTRL+C to exit");
-        while (true) {
-        }
+    if (args.length == 0) {
+      InteractiveMode.interactiveMode();
+    } else {
+      ExpertMode.expertMode(args, ConfigPath);
+    }
+    // At this point ConfigPath and AccountID should be set
+    try {
+      Accounts = AccountManager.getAllAccounts();
+    } catch (final InvalidConfigPathException error) {
+      System.out.println(error.getMessage());
+      System.exit(1);
+    } catch (final InvalidAccountIdException error) {
+      System.out.println(error.getMessage());
+      System.exit(2);
     }
 
-    @SuppressWarnings("unused")
-    private static void makeLinks() {
+    // Backup all configs
+    for (final File account : Accounts) {
+      final File destination = new File(account.getAbsolutePath() + ".bak");
+      try {
+        BackupManager.makeNewBackup(account);
+        System.out.println("Created backup for account " + account.getAbsolutePath());
+      } catch (final Exception error) {
+        System.out.println("Error when creating a backup " + account.getAbsolutePath());
+        continue;
+      }
     }
 
+    System.out.println("Press CTRL+C to exit");
+    while (true) {}
+  }
+
+  @SuppressWarnings("unused")
+  private static void makeLinks() {}
 }

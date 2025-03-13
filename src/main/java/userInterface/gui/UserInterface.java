@@ -7,32 +7,32 @@ import javax.swing.*;
 // Main class
 public class UserInterface {
 
-    // Main driver method
-    public static void main(final String[] args) {
-        // Creating instance of JFrame
-        final JFrame frame = new JFrame();
+  // Main driver method
+  public static void main(final String[] args) {
+    // Creating instance of JFrame
+    final JFrame frame = new JFrame();
 
-        // Creating instance of JButton
-        final JButton button = new JButton("test");
+    // Creating instance of JButton
+    final JButton button = new JButton("test");
 
-        // x axis, y axis, width, height
-        button.setBounds(150, 200, 220, 50);
+    // x axis, y axis, width, height
+    button.setBounds(150, 200, 220, 50);
 
-        // adding button in JFrame
-        frame.add(button);
+    // adding button in JFrame
+    frame.add(button);
 
-        final JTextField textField = new JTextField("");
-        textField.setBounds(150, 100, 200, 30);
+    final JTextField textField = new JTextField("");
+    textField.setBounds(150, 100, 200, 30);
 
-        frame.add(textField);
+    frame.add(textField);
 
-        // 400 width and 500 height
-        frame.setSize(500, 600);
+    // 400 width and 500 height
+    frame.setSize(500, 600);
 
-        // using no layout managers
-        frame.setLayout(null);
+    // using no layout managers
+    frame.setLayout(null);
 
-        // making the frame visible
-        frame.setVisible(true);
-    }
+    // making the frame visible
+    frame.setVisible(true);
+  }
 }
