@@ -1,10 +1,13 @@
 package userInterface.cli;
 
+import configManager.App;
 import java.util.Scanner;
+import utils.InputValidator;
+import utils.InvalidAccountIdException;
 
 public class InteractiveMode {
-  private static String AccountID = "";
-  private static String ConfigPath;
+  private static String AccountID = App.getAccountID();
+  private static String ConfigPath = App.getConfigPath();
 
   /*
    * For running interactively in the terminal
@@ -22,6 +25,7 @@ public class InteractiveMode {
 
     if (!userdatafolder.isEmpty()) {
       ConfigPath = userdatafolder;
+      App.setConfigPath(ConfigPath);
     }
 
     while (AccountID.isEmpty()) {
@@ -33,11 +37,15 @@ public class InteractiveMode {
         System.out.println("AccountID cannot be empty.");
       }
 
-      if (!AccountID.matches("^[0-9]+") && !AccountID.isEmpty()) {
+      try {
+        InputValidator.validateAccountId(AccountID);
+      } catch (InvalidAccountIdException error) {
         System.out.println("AccountID can only contain numbers");
         AccountID = "";
       }
     }
+
+    App.setAccountID(AccountID);
 
     scanner.close();
   }
