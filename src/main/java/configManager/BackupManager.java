@@ -17,7 +17,7 @@ public final class BackupManager {
    * @param dest destination for the copy
    * @throws IOException
    */
-  private static void copyFolderRecursively(final File src, final File dest) throws IOException {
+  public static void copyFolderRecursively(final File src, final File dest) throws IOException {
     if (src.isDirectory()) {
       if (!dest.exists()) {
         dest.mkdir();
@@ -47,7 +47,7 @@ public final class BackupManager {
     }
   }
 
-  private static void deleteFolderRecursively(final File file) throws IOException {
+  public static void deleteFolderRecursively(final File file) throws IOException {
     for (final File child : file.listFiles()) {
       if (child.isDirectory()) {
         System.out.println("deleting test bakcup..." + child);

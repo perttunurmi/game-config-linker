@@ -1,6 +1,7 @@
 package configManager;
 
 import java.io.File;
+import java.io.IOException;
 import userInterface.cli.*;
 import utils.*;
 
@@ -41,7 +42,7 @@ public class App {
 
     try {
 
-      Accounts = AccountManager.getAllAccounts();
+      Accounts = AccountManager.getAllAccounts(AccountID, ConfigPath);
 
     } catch (final InvalidConfigPathException error) {
 
@@ -72,9 +73,17 @@ public class App {
     // TODO: check that all is good with gameDir
 
     for (final File account : Accounts) {
-      if (account.getName() != AccountID) {
+      if (!account.getPath().contains(AccountID)) {
         File gameConfigCopy = new File(account, GameID);
-        LinkManager.createLink(gameDir, gameConfigCopy);
+        if (gameConfigCopy.exists()) {
+          try {
+            BackupManager.deleteFolderRecursively(gameConfigCopy);
+          } catch (IOException error) {
+            error.printStackTrace();
+          }
+
+          LinkManager.createLink(gameDir, gameConfigCopy);
+        }
       }
     }
 

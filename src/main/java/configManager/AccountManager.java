@@ -4,11 +4,13 @@ import java.io.File;
 import utils.*;
 
 public class AccountManager {
-  private static String AccountID;
-  private static String ConfigPath;
+  private static String AccountID = "";
+  private static String ConfigPath = "";
 
-  public static File[] getAllAccounts()
+  public static File[] getAllAccounts(String mainAccountID, String configPath)
       throws InvalidConfigPathException, InvalidAccountIdException {
+    AccountID = mainAccountID;
+    ConfigPath = configPath;
     InputValidator.validateAccountFolder(AccountID, ConfigPath);
 
     final File config = new File(ConfigPath);

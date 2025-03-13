@@ -8,16 +8,16 @@ import java.nio.file.Path;
 /** LinkManager */
 public class LinkManager {
 
-  public static void createLink(final File src, final File target) {
-    System.out.println("Creating symbolic directory link from " + src + " to " + target);
+  public static void createLink(final File src, final File dest) {
+    System.out.println("Creating symbolic directory link from " + src + " to " + dest);
 
-    if (target.exists()) {
-      System.err.println("Link target already exists: " + target);
+    if (dest.exists()) {
+      System.err.println("Link target already exists: " + dest);
       return;
     }
 
     try {
-      Path path = Files.createSymbolicLink(target.toPath(), src.toPath());
+      Path path = Files.createSymbolicLink(dest.toPath(), src.toPath());
       System.out.println("path to symbolic link: " + path);
     } catch (IOException error) {
       error.printStackTrace();
