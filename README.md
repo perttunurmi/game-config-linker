@@ -2,8 +2,8 @@
 
 ## Using version 0.11
 
-Links you're gameId 730 config folders so that all your Counter-Strike
-2 accounts will you the same config.
+Links your Counter-Strike config folders so that all your accounts
+will you the same config.
 
 > [!WARNING]
 > Before running this software:
