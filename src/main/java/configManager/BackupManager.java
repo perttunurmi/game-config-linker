@@ -49,16 +49,37 @@ public final class BackupManager {
         }
     }
 
+    public static void deleteFolderRecursively(File file) throws IOException {
+        for (File child : file.listFiles()) {
+            if (child.isDirectory()) {
+                System.out.println("deleting..." + child);
+                deleteFolderRecursively(child);
+            } else {
+                if (!child.delete()) {
+                    throw new IOException("Failed to delete file: " + child.getAbsolutePath());
+                }
+            }
+        }
+
+        if (!file.delete()) {
+            throw new IOException("Failed to delete file: " + file.getAbsolutePath());
+        }
+    }
+
     /**
      * Removes all backups
      * Helps you to get rid of backups of backups of backups and
      * also required so you can create symbolic links
      */
-    public static void removeOldBackups(final File userdataFolder) {
-        for (final File folder : userdataFolder.listFiles()) {
+    public static void removeOldBackups(File userdataFolder) {
+        for (File folder : userdataFolder.listFiles()) {
             if (folder.getAbsolutePath().endsWith(".bak")) {
-                folder.delete();
-                System.out.println("Deleted backup: " + folder.getAbsolutePath());
+                try {
+                    deleteFolderRecursively(folder);
+                    System.out.println("Deleted backup: " + folder.getAbsolutePath());
+                } catch (IOException error) {
+                    error.printStackTrace();
+                }
             }
         }
     }

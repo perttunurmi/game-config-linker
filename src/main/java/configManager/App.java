@@ -4,7 +4,7 @@ package configManager;
  * Entry point for the program
  */
 public class App {
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         ConfigLinker.main(args);
     }
 }

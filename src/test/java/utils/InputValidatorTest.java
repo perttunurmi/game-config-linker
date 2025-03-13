@@ -12,11 +12,11 @@ public class InputValidatorTest {
     @Test
     public void validateAccountIdException() {
         // Invalid account id
-        String accountId = "test";
+        final String accountId = "test";
         try {
             InputValidator.validateAccountId(accountId);
             assertTrue(false);
-        } catch (InvalidAccountIdException error) {
+        } catch (final InvalidAccountIdException error) {
             assertTrue(true);
         }
     }
@@ -24,25 +24,24 @@ public class InputValidatorTest {
     @Test
     public void validateAccountIdNoException() {
         // Valid account id
-        String accountId = "110802326";
+        final String accountId = "110802326";
         try {
             InputValidator.validateAccountId(accountId);
             assertTrue(true);
-        } catch (InvalidAccountIdException error) {
+        } catch (final InvalidAccountIdException error) {
             assertTrue(false);
         }
     }
 
     @Test
     public void validateAccountFolderNoException() {
-        String projectDir = System.getProperty("user.dir");
-        File testDir = new File(projectDir + "/src/test/resources/testfolder");
-        System.out.println(testDir);
+        final String projectDir = System.getProperty("user.dir");
+        final File testDir = new File(projectDir + "/src/test/resources/testfolder");
 
         // Directory is for testing and should always exist
         assertTrue(testDir.isDirectory());
 
-        String testAccountID = "73936547";
+        final String testAccountID = "73936547";
 
         try {
             InputValidator.validateAccountFolder(testAccountID, testDir);
