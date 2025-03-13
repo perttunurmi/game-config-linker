@@ -13,6 +13,6 @@ Links you're gameId 730 config folders so that all your Counter-Strike 2 account
 >
 
 > [!TIP]
-> You will need your AccountID for you main account.
-> It can be found on [steamdb: "https://steamdb.info/calculator/"],
+> You will need the AccountID of your main account.
+> It can be found on [steamdb](https://steamdb.info/calculator/).
 >
