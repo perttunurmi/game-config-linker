@@ -21,7 +21,7 @@ public class ConfigLinker {
     private static String GameID = "730"; // GameID, default 730 = csgo/cs2
     private static File[] Accounts;
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
 
         if (args.length == 0) {
             InteractiveMode.interactiveMode();
@@ -31,21 +31,21 @@ public class ConfigLinker {
         // At this point ConfigPath and AccountID should be set
         try {
             Accounts = AccountManager.getAllAccounts();
-        } catch (InvalidConfigPathException error) {
+        } catch (final InvalidConfigPathException error) {
             System.out.println(error.getMessage());
             System.exit(1);
-        } catch (InvalidAccountIdException error) {
+        } catch (final InvalidAccountIdException error) {
             System.out.println(error.getMessage());
             System.exit(2);
         }
 
         // Backup all configs
-        for (File account : Accounts) {
-            File destination = new File(account.getAbsolutePath() + ".bak");
+        for (final File account : Accounts) {
+            final File destination = new File(account.getAbsolutePath() + ".bak");
             try {
                 BackupManager.makeNewBackup(account);
                 System.out.println("Created backup for account " + account.getAbsolutePath());
-            } catch (Exception error) {
+            } catch (final Exception error) {
                 System.out.println("Error when creating a backup " + account.getAbsolutePath());
                 continue;
             }

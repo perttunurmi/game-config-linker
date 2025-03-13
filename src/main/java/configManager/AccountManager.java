@@ -10,8 +10,8 @@ public class AccountManager {
     public static File[] getAllAccounts() throws InvalidConfigPathException, InvalidAccountIdException {
         InputValidator.validateAccountFolder(AccountID, ConfigPath);
 
-        File config = new File(ConfigPath);
-        File accountPath = new File(ConfigPath, AccountID);
+        final File config = new File(ConfigPath);
+        final File accountPath = new File(ConfigPath, AccountID);
 
         if (!config.exists() || !config.isDirectory()) {
             throw new InvalidConfigPathException(

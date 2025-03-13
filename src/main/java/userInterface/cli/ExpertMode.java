@@ -10,7 +10,7 @@ public class ExpertMode {
      * @param args       Command line arguments
      * @param configPath path to steam userdata folder
      */
-    public static void expertMode(String args[], String configPath) {
+    public static void expertMode(final String args[], final String configPath) {
         ConfigPath = configPath;
         AccountID = args[0];
 

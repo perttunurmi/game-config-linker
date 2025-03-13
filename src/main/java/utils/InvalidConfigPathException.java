@@ -1,7 +1,7 @@
 package utils;
 
 public class InvalidConfigPathException extends Exception {
-    public InvalidConfigPathException(String errorMessage) {
+    public InvalidConfigPathException(final String errorMessage) {
         super(errorMessage);
     }
 }

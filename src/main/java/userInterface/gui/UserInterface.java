@@ -8,12 +8,12 @@ import javax.swing.*;
 public class UserInterface {
 
     // Main driver method
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         // Creating instance of JFrame
-        JFrame frame = new JFrame();
+        final JFrame frame = new JFrame();
 
         // Creating instance of JButton
-        JButton button = new JButton("test");
+        final JButton button = new JButton("test");
 
         // x axis, y axis, width, height
         button.setBounds(150, 200, 220, 50);
@@ -21,7 +21,7 @@ public class UserInterface {
         // adding button in JFrame
         frame.add(button);
 
-        JTextField textField = new JTextField("");
+        final JTextField textField = new JTextField("");
         textField.setBounds(150, 100, 200, 30);
 
         frame.add(textField);

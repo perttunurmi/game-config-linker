@@ -13,11 +13,11 @@ public class InteractiveMode {
         System.out.print("\033[H\033[2J");
         System.out.flush();
 
-        Scanner scanner = new Scanner(System.in);
+        final Scanner scanner = new Scanner(System.in);
 
         System.out.println(
                 "Enter the path to the Steam userdata folder: (defaults to C:\\Program Files (x86)\\Steam\\userdata\\)");
-        String userdatafolder = scanner.nextLine().trim();
+        final String userdatafolder = scanner.nextLine().trim();
         if (!userdatafolder.isEmpty()) {
             ConfigPath = userdatafolder;
         }

@@ -49,8 +49,8 @@ public final class BackupManager {
         }
     }
 
-    public static void deleteFolderRecursively(File file) throws IOException {
-        for (File child : file.listFiles()) {
+    public static void deleteFolderRecursively(final File file) throws IOException {
+        for (final File child : file.listFiles()) {
             if (child.isDirectory()) {
                 System.out.println("deleting..." + child);
                 deleteFolderRecursively(child);
@@ -71,13 +71,13 @@ public final class BackupManager {
      * Helps you to get rid of backups of backups of backups and
      * also required so you can create symbolic links
      */
-    public static void removeOldBackups(File userdataFolder) {
-        for (File folder : userdataFolder.listFiles()) {
+    public static void removeOldBackups(final File userdataFolder) {
+        for (final File folder : userdataFolder.listFiles()) {
             if (folder.getAbsolutePath().endsWith(".bak")) {
                 try {
                     deleteFolderRecursively(folder);
                     System.out.println("Deleted backup: " + folder.getAbsolutePath());
-                } catch (IOException error) {
+                } catch (final IOException error) {
                     error.printStackTrace();
                 }
             }
