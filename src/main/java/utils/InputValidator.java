@@ -53,4 +53,12 @@ public final class InputValidator {
           "Directory " + userdata.getAbsolutePath() + " doesn't exist");
     }
   }
+
+  public static void validateGameId(final File accountPath, final String gameId)
+      throws InvalidGameIdException {
+    File gameDir = new File(accountPath, gameId);
+    if (!gameDir.isDirectory()) {
+      throw new InvalidGameIdException("Directory " + gameDir.getAbsolutePath() + " doesn't exist");
+    }
+  }
 }
