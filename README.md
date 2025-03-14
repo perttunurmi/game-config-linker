@@ -1,5 +1,7 @@
 # Steam game config manager
 
+![Build](https://github.com/perttunurmi/SteamGameConfigManager/actions/workflows/maven.yml/badge.svg)
+
 ## Using version 0.11
 
 Links your Counter-Strike config folders so that all your accounts
