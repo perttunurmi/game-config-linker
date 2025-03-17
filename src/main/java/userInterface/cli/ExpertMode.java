@@ -1,7 +1,6 @@
 package userInterface.cli;
 
 import configManager.App;
-import java.awt.List;
 import utils.*;
 
 public class ExpertMode {
@@ -41,20 +40,5 @@ public class ExpertMode {
   }
 
   // TODO: Lista 2-tuplia???
-  private static void seperateArgumentsAndParameters(final String args[]) {
-    List parameters = new List();
-    Tuple[] arguments = new Tuple[args.length];
-
-    for (int i = 0; i < args.length; i++) {
-      if ((args[i].startsWith("-")) || args[i].startsWith("--")) {
-        if ((i < args.length + 1)) {
-          if (!args[i].startsWith("-") && !args[i].startsWith("--")) {
-            Tuple tuple = new Tuple<String, String>(args[i], args[i + 1]);
-          } else {
-            Tuple tuple = new Tuple<String, String>(args[i], "");
-          }
-        }
-      }
-    }
-  }
+  private static void seperateArgumentsAndParameters(final String args[]) {}
 }

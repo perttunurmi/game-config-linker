@@ -3,6 +3,7 @@ package configManager;
 import java.io.File;
 import java.io.IOException;
 import userInterface.cli.*;
+import userInterface.gui.*;
 import utils.*;
 
 /** Entry point for the program */
@@ -25,6 +26,7 @@ public class App {
    * Program that links multiple Steam accounts to use the same config files
    */
   public static void main(final String[] args) {
+    UserInterface.gui();
 
     InteractiveMode.interactiveMode();
     // At this point ConfigPath and AccountID should be set

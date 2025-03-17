@@ -1,38 +1,46 @@
 package userInterface.gui;
 
+import java.awt.BorderLayout;
 // Java program using label (swing)
-import java.io.*;
 import javax.swing.*;
 
 // Main class
 public class UserInterface {
+  public static void gui() {
+    // Creating the Frame
+    JFrame frame = new JFrame("Config manager");
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.setSize(600, 400);
 
-  // Main driver method
-  public static void main(final String[] args) {
-    // Creating instance of JFrame
-    final JFrame frame = new JFrame();
+    // Creating the MenuBar and adding components
+    JMenuBar menubar = new JMenuBar();
+    JMenu menu1 = new JMenu("File");
+    JMenu menu2 = new JMenu("Help");
+    menubar.add(menu1);
+    menubar.add(menu2);
+    JMenuItem menu11 = new JMenuItem("Import config");
+    JMenuItem menu22 = new JMenuItem("Export config");
+    menu1.add(menu11);
+    menu1.add(menu22);
 
-    // Creating instance of JButton
-    final JButton button = new JButton("test");
+    JPanel panel = new JPanel();
+    JLabel labelConfigPath = new JLabel("Config path: ");
+    JLabel labelAccountID = new JLabel("AccountID: ");
+    JTextField tfConfigPath = new JTextField(40);
+    JTextField tfAccountID = new JTextField(40);
+    panel.add(labelConfigPath);
+    panel.add(tfConfigPath);
+    panel.add(labelAccountID);
+    panel.add(tfAccountID);
 
-    // x axis, y axis, width, height
-    button.setBounds(150, 200, 220, 50);
+    // Text Area at the Center
+    JTextArea consoleArea = new JTextArea(5, 1);
+    consoleArea.append("staring...\n");
 
-    // adding button in JFrame
-    frame.add(button);
-
-    final JTextField textField = new JTextField("");
-    textField.setBounds(150, 100, 200, 30);
-
-    frame.add(textField);
-
-    // 400 width and 500 height
-    frame.setSize(500, 600);
-
-    // using no layout managers
-    frame.setLayout(null);
-
-    // making the frame visible
+    // Adding Components to the frame.
+    frame.getContentPane().add(BorderLayout.SOUTH, consoleArea);
+    frame.getContentPane().add(BorderLayout.NORTH, menubar);
+    frame.getContentPane().add(BorderLayout.CENTER, panel);
     frame.setVisible(true);
   }
 }
