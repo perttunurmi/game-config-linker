@@ -13,6 +13,7 @@ public class App {
   private static String GameID = "730"; // GameID, default 730 = csgo/cs2
   private static File[] Accounts;
 
+  // TODO: "Expertmode"
   // TODO: Add graphical user interface
   // TODO: Allow managing of multiple games
 
