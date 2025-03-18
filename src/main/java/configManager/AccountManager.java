@@ -25,6 +25,7 @@ public class AccountManager {
       throw new InvalidAccountIdException("Directory " + accountPath + " doesn't exist");
     }
 
+    App.setAccounts(config.listFiles());
     return config.listFiles();
   }
 }

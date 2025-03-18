@@ -14,13 +14,10 @@ public class App {
   private static String GameID = "730"; // GameID, default 730 = csgo/cs2
   private static File[] Accounts;
 
-  // TODO: "Expertmode"
-  // TODO: Add graphical user interface
-  // TODO: Allow managing of multiple games
-
   /*
    * Steam game config manager
    * Author: Perttu Nurmi
+   * License: MIT
    * GitHub: https://github.com/perttunurmi
    * Email: perttu.nurmi@gmail.com
    * Program that links multiple Steam accounts to use the same config files
@@ -43,21 +40,6 @@ public class App {
         InputValidator.validateAccountFolder(AccountID, ConfigPath);
       } catch (InvalidConfigPathException | InvalidAccountIdException error) {
         error.printStackTrace();
-      }
-
-      try {
-
-        Accounts = AccountManager.getAllAccounts(AccountID, ConfigPath);
-
-      } catch (final InvalidConfigPathException error) {
-
-        System.out.println(error.getMessage());
-        System.exit(1);
-
-      } catch (final InvalidAccountIdException error) {
-
-        System.out.println(error.getMessage());
-        System.exit(2);
       }
 
       System.out.println("Found " + Accounts.length + " accounts.");
@@ -101,6 +83,10 @@ public class App {
     }
   }
 
+  public static void linkConfigs() {
+    //
+  }
+
   public static String getConfigPath() {
     return ConfigPath;
   }
@@ -127,6 +113,18 @@ public class App {
 
   public static File[] getAccounts() {
     return Accounts;
+  }
+
+  public static void setAccounts() {
+    try {
+      Accounts = AccountManager.getAllAccounts(AccountID, ConfigPath);
+    } catch (final InvalidConfigPathException error) {
+      System.out.println(error.getMessage());
+      System.exit(1);
+    } catch (final InvalidAccountIdException error) {
+      System.out.println(error.getMessage());
+      System.exit(2);
+    }
   }
 
   public static void setAccounts(final File[] accounts) {

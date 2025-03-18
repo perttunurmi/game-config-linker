@@ -1,7 +1,9 @@
 package userInterface.gui;
 
 import configManager.App;
+import configManager.BackupManager;
 import java.awt.BorderLayout;
+import java.io.File;
 import javax.swing.*;
 
 public class UserInterface {
@@ -13,9 +15,7 @@ public class UserInterface {
     frame.setSize(600, 400);
 
     final JMenuBar menubar = menubar();
-
     final JTextArea consoleArea = consoleArea(5, 1);
-
     final JPanel panel = centerPanel();
 
     frame.getContentPane().add(BorderLayout.SOUTH, consoleArea);
@@ -33,9 +33,17 @@ public class UserInterface {
     final JLabel labelConfigPath = new JLabel("Config path: ");
     final JTextField tfConfigPath = new JTextField(40);
     tfConfigPath.setText(App.getConfigPath());
+    tfConfigPath.addCaretListener(
+        e -> {
+          App.setConfigPath(tfConfigPath.getText());
+        });
 
     final JLabel labelAccountID = new JLabel("AccountID: ");
     final JTextField tfAccountID = new JTextField(40);
+    tfAccountID.addCaretListener(
+        e -> {
+          App.setAccountID(tfAccountID.getText());
+        });
 
     panel.add(labelConfigPath);
     panel.add(tfConfigPath);
@@ -44,12 +52,28 @@ public class UserInterface {
 
     final JButton makeBackupButton = new JButton("Make backup");
     panel.add(makeBackupButton);
+    makeBackupButton.addActionListener(
+        e -> {
+          File file = new File(App.getConfigPath());
+          BackupManager.makeNewBackup(file);
+        });
 
     final JButton removeBackupButton = new JButton("Remove backup");
     panel.add(removeBackupButton);
+    removeBackupButton.addActionListener(
+        e -> {
+          File file = new File(App.getConfigPath());
+          BackupManager.removeOldBackups(file);
+        });
 
     final JButton button = new JButton("Clone config");
     panel.add(button);
+    button.addActionListener(
+        e -> {
+          File file = new File(App.getConfigPath());
+          App.getAccounts();
+          consoleArea.append(App.getConfigPath() + "\\" + App.getAccountID());
+        });
 
     return panel;
   }
@@ -81,15 +105,9 @@ public class UserInterface {
     menu1.add(menu11);
     menu1.add(menu22);
 
-    menu22.addActionListener(
-        e -> {
-          consoleArea.append("Exporting config... (not implemented yet)\n");
-        });
+    menu22.addActionListener(e -> {});
 
-    menu22.addActionListener(
-        e -> {
-          consoleArea.append("Importing config... (not implemented yet)\n");
-        });
+    menu22.addActionListener(e -> {});
 
     return menubar;
   }
