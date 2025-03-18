@@ -1,7 +1,7 @@
 # Steam game config manager
 
 ![Build](https://github.com/perttunurmi/SteamGameConfigManager/actions/workflows/maven.yml/badge.svg)
-![Wakapi](https://wakapi.dev/api/badge/perttu/interval:any/project:SteamGameConfigCloner/wakapi.svg)
+![Wakapi](https://wakapi.dev/api/badge/perttu/interval:any/project:SteamGameConfigCloner/badge.svg)
 
 ## Using version 0.11
 
