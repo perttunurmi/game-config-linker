@@ -10,7 +10,7 @@ will you the same config.
 > [!WARNING]
 > Before running this software:
 >
-> * Make sure you have launched Counter-Strike at least once
+> * Make sure you have launched Counter-Strike at least once on all of your accounts
 >
 > * Backup everything in "C:\Program Files (x86)\Steam\userdata"
 >
