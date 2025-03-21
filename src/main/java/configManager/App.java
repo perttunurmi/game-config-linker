@@ -26,65 +26,49 @@ public class App {
     if (args.length < 1) {
       UserInterface.gui();
     } else {
-
-      InteractiveMode.interactiveMode();
-      // At this point ConfigPath and AccountID should be set
-
-      try {
-        InputValidator.validateAccountId(AccountID);
-      } catch (final InvalidAccountIdException error) {
-        error.printStackTrace();
-      }
-
-      try {
-        InputValidator.validateAccountFolder(AccountID, ConfigPath);
-      } catch (InvalidConfigPathException | InvalidAccountIdException error) {
-        error.printStackTrace();
-      }
-
+      System.out.println("cli mode not working right now");
       System.out.println("Found " + Accounts.length + " accounts.");
       System.out.println("Starting backup");
-      // Backup all configs
-      for (final File account : Accounts) {
-        try {
-          BackupManager.makeNewBackup(account);
-          System.out.println("Created backup for account " + account.getAbsolutePath());
-        } catch (final Exception error) {
-          System.out.println("Error when creating a backup " + account.getAbsolutePath());
-          continue;
-        }
-      }
 
       File accountDir = new File(ConfigPath, AccountID);
       File gameDir = new File(accountDir, GameID);
-      // TODO: check that all is good with gameDir
-
-      for (final File account : Accounts) {
-        if (!account.getPath().contains(AccountID)) {
-          File gameConfigCopy = new File(account, GameID);
-          if (gameConfigCopy.exists()) {
-            if (LinkManager.isSymbolicLink(gameConfigCopy)) {
-              LinkManager.removeLink(gameConfigCopy);
-            } else {
-              try {
-                BackupManager.deleteFolderRecursively(gameConfigCopy);
-              } catch (IOException error) {
-                error.printStackTrace();
-              }
-            }
-
-            LinkManager.createLink(gameDir, gameConfigCopy);
-          }
-        }
-      }
 
       System.out.println("Press CTRL+C to exit");
       while (true) {}
     }
   }
 
-  public static void linkConfigs() {
-    //
+  public static void backupAllConfigs() {
+    for (final File account : Accounts) {
+      try {
+        BackupManager.makeNewBackup(account);
+        System.out.println("Created backup for account " + account.getAbsolutePath());
+      } catch (final Exception error) {
+        System.out.println("Error when creating a backup " + account.getAbsolutePath());
+        continue;
+      }
+    }
+  }
+
+  public static void linkConfigs(File gameDir, File gameConfig) {
+    LinkManager.createLink(gameDir, gameConfig);
+
+    for (final File account : Accounts) {
+      if (!account.getPath().contains(AccountID)) {
+        File gameConfigCopy = new File(account, GameID);
+        if (gameConfigCopy.exists()) {
+          if (LinkManager.isSymbolicLink(gameConfigCopy)) {
+            LinkManager.removeLink(gameConfigCopy);
+          } else {
+            try {
+              BackupManager.deleteFolderRecursively(gameConfigCopy);
+            } catch (IOException error) {
+              error.printStackTrace();
+            }
+          }
+        }
+      }
+    }
   }
 
   public static String getConfigPath() {
@@ -113,6 +97,16 @@ public class App {
 
   public static File[] getAccounts() {
     return Accounts;
+  }
+
+  private static void runInteractively() {
+    InteractiveMode.interactiveMode();
+  }
+
+  private static void runValidators() throws InvalidAccountIdException, InvalidConfigPathException {
+    InputValidator.validateAccountId(AccountID);
+    InputValidator.validateAccountFolder(AccountID, ConfigPath);
+    // TODO: check that all is good with gameDir
   }
 
   public static void setAccounts() {
