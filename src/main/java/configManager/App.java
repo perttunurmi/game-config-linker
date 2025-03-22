@@ -28,7 +28,8 @@ public class App {
    * @param args commandline arguments
    */
   public static void main(final String[] args) {
-    boolean interactive = false;
+    // boolean interactive = false;
+    boolean interactive = true; // Keep this way until expertmode or gui works
 
     // if no arguments are given start automatically  with gui
     if (args.length == 0) {
@@ -40,7 +41,7 @@ public class App {
         predictMainAccount();
         System.out.println(Accounts);
       }
-      UserInterface.gui();
+      // UserInterface.gui();
 
     } else {
       // check if user gave -i or --interactive as parameters

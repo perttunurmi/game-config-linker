@@ -18,7 +18,7 @@ public class InteractiveMode {
     boolean configPathSet = false;
     while (true) {
       System.out.println("Is your steam userdatafolder in " + App.getConfigPath() + "? (y/n)");
-      String answer = scanner.nextLine().trim();
+      final String answer = scanner.nextLine().trim();
       if (answer.trim().toLowerCase().matches("y")) {
         configPathSet = true;
         break;
@@ -37,7 +37,7 @@ public class InteractiveMode {
         userdatafolder = scanner.nextLine().trim();
         try {
           InputValidator.validateConfigPath(userdatafolder);
-        } catch (InvalidConfigPathException error) {
+        } catch (final InvalidConfigPathException error) {
           System.out.println("userdata folder doesn't exist or is not a directory");
           userdatafolder = "";
         }
@@ -55,7 +55,7 @@ public class InteractiveMode {
     while (true) {
       System.out.println(
           "Is your main steam accounts accountid: " + App.getAccountID() + "? (y/n)");
-      String answer = scanner.nextLine().trim();
+      final String answer = scanner.nextLine().trim();
       if (answer.trim().toLowerCase().matches("y")) {
         accountIdSet = true;
         break;
@@ -77,7 +77,7 @@ public class InteractiveMode {
 
         try {
           InputValidator.validateAccountId(accountID);
-        } catch (InvalidAccountIdException error) {
+        } catch (final InvalidAccountIdException error) {
           System.out.println("accountID can only contain numbers");
           accountID = "";
         }
@@ -89,7 +89,7 @@ public class InteractiveMode {
     boolean gameIdSet = false;
     while (true) {
       System.out.println("Copy config for the gameID 730 Counter-Strike 2 / CSGO? (y/n)");
-      String answer = scanner.nextLine().trim();
+      final String answer = scanner.nextLine().trim();
       if (answer.trim().toLowerCase().matches("y")) {
         gameIdSet = true;
         break;
@@ -105,10 +105,10 @@ public class InteractiveMode {
         System.out.println("Enter GameID:");
         gameID = scanner.nextLine().trim();
 
-        File accountPath = new File(App.getConfigPath(), App.getAccountID());
+        final File accountPath = new File(App.getConfigPath(), App.getAccountID());
         try {
           InputValidator.validateGameId(accountPath, gameID);
-        } catch (InvalidGameIdException error) {
+        } catch (final InvalidGameIdException error) {
           System.out.println("Config for this gameID does not exist");
           gameID = "";
         }
@@ -117,7 +117,7 @@ public class InteractiveMode {
 
     System.out.println("Do you want to make new backups? this will remove old backups(y/n)");
 
-    String makeBackupAnswer = scanner.nextLine().trim();
+    final String makeBackupAnswer = scanner.nextLine().trim();
     if (makeBackupAnswer.trim().toLowerCase().matches("y")
         || makeBackupAnswer.trim().toLowerCase().matches("yes")) {
       System.out.println("Removing old backups");
@@ -132,7 +132,7 @@ public class InteractiveMode {
     System.out.println("Next action will delete all configs except the one from your main account");
     System.out.println("Do you want to link the configs? (y/n)");
 
-    String createLinksAnswer = scanner.nextLine().trim();
+    final String createLinksAnswer = scanner.nextLine().trim();
     if (createLinksAnswer.trim().toLowerCase().matches("y")
         || createLinksAnswer.trim().toLowerCase().matches("yes")) {
       System.out.println("Linking configs...");

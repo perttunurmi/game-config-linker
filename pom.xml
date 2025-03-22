@@ -5,7 +5,7 @@
 
   <groupId>org.fpstukku</groupId>
   <artifactId>SteamGameConfigManager</artifactId>
-  <version>0.11</version>
+  <version>0.20</version>
 
   <name>SteamGameConfigManager</name>
   <!-- FIXME change it to the project's website -->
