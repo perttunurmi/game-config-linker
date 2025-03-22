@@ -47,6 +47,12 @@ public final class BackupManager {
     }
   }
 
+  /**
+   * Deletes all files and subdirectories in recursively
+   *
+   * @param file which we delete
+   * @throws IOException
+   */
   public static void deleteFolderRecursively(final File file) throws IOException {
     for (final File child : file.listFiles()) {
       if (child.isDirectory()) {
@@ -65,11 +71,13 @@ public final class BackupManager {
   }
 
   /**
-   * Removes all backups Helps you to get rid of backups of backups of backups and also required so
-   * you can create symbolic links
+   * Removes all backups (files and directories ending with .bak) helps you to get rid of backups of
+   * backups of backups and also required so you can create symbolic links
+   *
+   * @src path to directory
    */
-  public static void removeOldBackups(final File userdataFolder) {
-    for (final File folder : userdataFolder.listFiles()) {
+  public static void removeOldBackups(final File src) {
+    for (final File folder : src.listFiles()) {
       if (folder.getAbsolutePath().endsWith(".bak")) {
         try {
           deleteFolderRecursively(folder);
@@ -83,6 +91,8 @@ public final class BackupManager {
 
   /**
    * Does a backup for every file/folder in a directory. Note: will also create backups for backups
+   *
+   * @src path to directory
    */
   public static void makeNewBackup(final File src) {
     final File dest = new File(src.getAbsolutePath() + ".bak");

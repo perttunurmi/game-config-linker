@@ -3,8 +3,6 @@ package configManager;
 import java.io.File;
 import java.io.IOException;
 
-import utils.InputValidator;
-
 /** ConfigExporter */
 public class ConfigExporter {
   private static File exportPath = new File("");
@@ -12,7 +10,6 @@ public class ConfigExporter {
   public static void export() {
     File userdataAccountDir = new File(App.getConfigPath(), App.getAccountID());
     File configFile = new File(userdataAccountDir, App.getGameID());
-
 
     try {
       BackupManager.copyFolderRecursively(configFile, exportPath);
@@ -29,5 +26,9 @@ public class ConfigExporter {
 
   public static void setExportPath(File pathToExport) {
     exportPath = pathToExport;
+  }
+
+  public static File getExportPath() {
+    return exportPath;
   }
 }

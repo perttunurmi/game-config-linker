@@ -14,18 +14,28 @@ public class App {
   private static File[] Accounts;
 
   /*
-   * Steam game config manager
+   * game config manager
    * Author: Perttu Nurmi
    * License: MIT
    * GitHub: https://github.com/perttunurmi
    * Email: perttu.nurmi@gmail.com
    * Program that links multiple Steam accounts to use the same config files
    */
+
+  /**
+   * Entry point for the program
+   *
+   * @param args commandline arguments
+   */
   public static void main(final String[] args) {
+    boolean interactive = false;
+
     // if no arguments are given start automatically  with gui
     if (args.length == 0) {
+
       File config = new File(ConfigPath);
       if (config.isDirectory()) {
+
         setAccounts();
         predictMainAccount();
         System.out.println(Accounts);
@@ -33,16 +43,19 @@ public class App {
       UserInterface.gui();
 
     } else {
+      // check if user gave -i or --interactive as parameters
+      for (String arg : args) {
+        System.out.println(arg);
+        if (arg.matches("-i") || arg.matches("--interactive")) {
+          interactive = true;
+        }
+      }
+    }
 
-      System.out.println("cli mode not working right now");
-      System.out.println("Found " + Accounts.length + " accounts.");
-      System.out.println("Starting backup");
-
-      File accountDir = new File(ConfigPath, AccountID);
-      File gameDir = new File(accountDir, GameID);
-
-      System.out.println("Press CTRL+C to exit");
-      while (true) {}
+    if (interactive == true) {
+      runInteractively();
+    } else {
+      runInExpertMode(args);
     }
   }
 
@@ -58,12 +71,18 @@ public class App {
     }
   }
 
-  public static void linkConfigs(File gameDir, File gameConfig) {
-    LinkManager.createLink(gameDir, gameConfig);
+  public static void removeOldBackups() {
+    BackupManager.removeOldBackups(new File(ConfigPath));
+  }
+
+  public static void linkConfigs() {
+    File mainAccountDirectory = new File(ConfigPath, AccountID);
 
     for (final File account : Accounts) {
       if (!account.getPath().contains(AccountID)) {
         File gameConfigCopy = new File(account, GameID);
+
+        // Delete existing liks and folders
         if (gameConfigCopy.exists()) {
           if (LinkManager.isSymbolicLink(gameConfigCopy)) {
             LinkManager.removeLink(gameConfigCopy);
@@ -75,6 +94,9 @@ public class App {
             }
           }
         }
+        // Create the link
+        LinkManager.createLink(new File(mainAccountDirectory, GameID), gameConfigCopy);
+        System.out.println("Created link for account " + account.getAbsolutePath());
       }
     }
   }
@@ -119,31 +141,42 @@ public class App {
     }
   }
 
-  public static void setAccounts(final File[] accounts) {
+  public static void setAccounts(File[] accounts) {
     Accounts = accounts;
   }
 
+  public static void predictMainAccount() {
+    AccountManager.predictMainAccount();
+  }
+
+  /**
+   * Interactive mode is supposed to prompt user for input in the ideal case user will only need to
+   * answer yes/no questions
+   */
   private static void runInteractively() {
     InteractiveMode.interactiveMode();
   }
 
-  private static void runValidators() throws InvalidAccountIdException, InvalidConfigPathException {
-    InputValidator.validateAccountId(AccountID);
-    InputValidator.validateAccountFolder(AccountID, ConfigPath);
-    // TODO: check that all is good with gameDir
+  /**
+   * Using this mode will allow to user to give required information as parameters good for more
+   * advanced users or if you for some reason want to use this software for scripts. Actually this
+   * exists mainly to make testing easier!
+   *
+   * @param args commandline arguments. Note: if args contain -i or --interactive we will never run
+   *     in expertmode.
+   */
+  private static void runInExpertMode(final String[] args) {
+    ExpertMode.expertMode(args);
   }
 
-  /*
-   * Predicts the main account by checking which account has the most config folders
-   */
-  private static void predictMainAccount() {
-    File mostLikelyMainAccount = Accounts[0];
+  private static void runValidators()
+      throws InvalidAccountIdException, InvalidConfigPathException, InvalidGameIdException {
+    InputValidator.validateAccountId(AccountID);
 
-    for (final File account : Accounts) {
-      if (account.list().length > mostLikelyMainAccount.list().length) {
-        mostLikelyMainAccount = account;
-      }
-    }
-    setAccountID(mostLikelyMainAccount.getName());
+    File configpath = new File(ConfigPath);
+    InputValidator.validateAccountFolder(AccountID, ConfigPath);
+
+    File accountpath = new File(configpath, AccountID);
+    InputValidator.validateGameId(accountpath, GameID);
   }
 }

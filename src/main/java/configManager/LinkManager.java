@@ -17,9 +17,9 @@ public class LinkManager {
     }
 
     try {
-      Path path = Files.createSymbolicLink(dest.toPath(), src.toPath());
+      final Path path = Files.createSymbolicLink(dest.toPath(), src.toPath());
       System.out.println("path to symbolic link: " + path);
-    } catch (IOException error) {
+    } catch (final IOException error) {
       error.printStackTrace();
     }
   }
@@ -28,7 +28,7 @@ public class LinkManager {
     System.out.println("Removing symbolic directory link from " + src);
     try {
       Files.delete(src.toPath());
-    } catch (IOException error) {
+    } catch (final IOException error) {
       error.printStackTrace();
     }
   }
