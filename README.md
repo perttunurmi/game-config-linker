@@ -2,6 +2,7 @@
 
 ![Build](https://github.com/perttunurmi/SteamGameConfigManager/actions/workflows/maven.yml/badge.svg)
 
+![Lates release](https://github.com/perttunurmi/game-config-manager/releases/latest)
 ## Using version 0.11
 
 Links your Counter-Strike config folders so that all your accounts
