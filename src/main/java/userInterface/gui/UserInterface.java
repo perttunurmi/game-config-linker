@@ -40,6 +40,7 @@ public class UserInterface {
 
     final JLabel labelAccountID = new JLabel("AccountID: ");
     final JTextField tfAccountID = new JTextField(40);
+    tfAccountID.setText(App.getAccountID());
     tfAccountID.addCaretListener(
         e -> {
           App.setAccountID(tfAccountID.getText());

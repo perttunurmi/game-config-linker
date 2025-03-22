@@ -11,4 +11,11 @@ public class AppTest {
   public void shouldAnswerWithTrue() {
     assertTrue(true);
   }
+
+  // Tests if app works with valid input
+  @Test
+  public void TestConfigLinking() {
+    String args[] = {}; // Empty args 
+    App.main(args);
+  }
 }

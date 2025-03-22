@@ -9,8 +9,7 @@ import utils.*;
 /** Entry point for the program */
 public class App {
   private static String ConfigPath = "C:\\Program Files (x86)\\Steam\\userdata";
-  private static String AccountID =
-      ""; // Steam AccountID, can be found at https://steamdb.info/calculator/
+  private static String AccountID = "";
   private static String GameID = "730"; // GameID, default 730 = csgo/cs2
   private static File[] Accounts;
 
@@ -23,9 +22,18 @@ public class App {
    * Program that links multiple Steam accounts to use the same config files
    */
   public static void main(final String[] args) {
-    if (args.length < 1) {
+    // if no arguments are given start automatically  with gui
+    if (args.length == 0) {
+      File config = new File(ConfigPath);
+      if (config.isDirectory()) {
+        setAccounts();
+        predictMainAccount();
+        System.out.println(Accounts);
+      }
       UserInterface.gui();
+
     } else {
+
       System.out.println("cli mode not working right now");
       System.out.println("Found " + Accounts.length + " accounts.");
       System.out.println("Starting backup");
@@ -99,19 +107,9 @@ public class App {
     return Accounts;
   }
 
-  private static void runInteractively() {
-    InteractiveMode.interactiveMode();
-  }
-
-  private static void runValidators() throws InvalidAccountIdException, InvalidConfigPathException {
-    InputValidator.validateAccountId(AccountID);
-    InputValidator.validateAccountFolder(AccountID, ConfigPath);
-    // TODO: check that all is good with gameDir
-  }
-
   public static void setAccounts() {
     try {
-      Accounts = AccountManager.getAllAccounts(AccountID, ConfigPath);
+      Accounts = AccountManager.getAllAccounts(ConfigPath);
     } catch (final InvalidConfigPathException error) {
       System.out.println(error.getMessage());
       System.exit(1);
@@ -123,5 +121,29 @@ public class App {
 
   public static void setAccounts(final File[] accounts) {
     Accounts = accounts;
+  }
+
+  private static void runInteractively() {
+    InteractiveMode.interactiveMode();
+  }
+
+  private static void runValidators() throws InvalidAccountIdException, InvalidConfigPathException {
+    InputValidator.validateAccountId(AccountID);
+    InputValidator.validateAccountFolder(AccountID, ConfigPath);
+    // TODO: check that all is good with gameDir
+  }
+
+  /*
+   * Predicts the main account by checking which account has the most config folders
+   */
+  private static void predictMainAccount() {
+    File mostLikelyMainAccount = Accounts[0];
+
+    for (final File account : Accounts) {
+      if (account.list().length > mostLikelyMainAccount.list().length) {
+        mostLikelyMainAccount = account;
+      }
+    }
+    setAccountID(mostLikelyMainAccount.getName());
   }
 }
