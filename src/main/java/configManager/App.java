@@ -30,6 +30,13 @@ public class App {
   public static void main(final String[] args) {
     // boolean interactive = false;
     boolean interactive = true; // Keep this way until expertmode or gui works
+    //
+    String os = System.getProperty("os.name");
+
+    if (!os.toLowerCase().contains("win")) { // I hope mac doesn't show up as "darWIN"
+      System.out.println("Sorry this program is only supported on Windows");
+      while (true) {}
+    }
 
     // if no arguments are given start automatically  with gui
     if (args.length == 0) {

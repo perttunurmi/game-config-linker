@@ -7,7 +7,7 @@ import java.io.IOException;
 public class ConfigExporter {
   private static File exportPath = new File("");
 
-  public static void export() {
+  private static void export() {
     File userdataAccountDir = new File(App.getConfigPath(), App.getAccountID());
     File configFile = new File(userdataAccountDir, App.getGameID());
 

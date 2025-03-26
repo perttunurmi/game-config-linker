@@ -14,7 +14,6 @@ public class ConfigExporterTest {
     App.setAccountID("73936547");
     App.setConfigPath(testDir.toString());
 
-    ConfigExporter.setExportPath(path);
-    ConfigExporter.export();
+    ConfigExporter.export(path);
   }
 }
