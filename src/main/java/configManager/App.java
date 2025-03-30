@@ -6,6 +6,8 @@ import userInterface.cli.*;
 import userInterface.gui.*;
 import utils.*;
 
+/** - TODO: configpath, accountid and gameid */
+
 /** Entry point for the program */
 public class App {
   private static String ConfigPath = "C:\\Program Files (x86)\\Steam\\userdata";
@@ -28,12 +30,12 @@ public class App {
    * @param args commandline arguments
    */
   public static void main(final String[] args) {
-    // boolean interactive = false;
-    boolean interactive = true; // Keep this way until expertmode or gui works
-    //
+    boolean interactive = false;
+    // boolean interactive = true; // Keep this way until expertmode or gui works
+
     String os = System.getProperty("os.name");
 
-    if (!os.toLowerCase().contains("win")) { // I hope mac doesn't show up as "darWIN"
+    if (!os.toLowerCase().contains("win")) {
       System.out.println("Sorry this program is only supported on Windows");
       while (true) {}
     }
@@ -48,7 +50,7 @@ public class App {
         predictMainAccount();
         System.out.println(Accounts);
       }
-      // UserInterface.gui();
+      UserInterface.gui();
 
     } else {
       // check if user gave -i or --interactive as parameters
@@ -68,7 +70,7 @@ public class App {
   }
 
   public static void backupAllConfigs() {
-    for (final File account : Accounts) {
+    for (final File account : new File(ConfigPath).listFiles()) {
       try {
         BackupManager.makeNewBackup(account);
         System.out.println("Created backup for account " + account.getAbsolutePath());
