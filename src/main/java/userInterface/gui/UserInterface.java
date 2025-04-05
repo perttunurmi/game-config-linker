@@ -2,6 +2,7 @@ package userInterface.gui;
 
 import configManager.App;
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import javax.swing.*;
 
 public class UserInterface {
@@ -9,7 +10,8 @@ public class UserInterface {
   public static void gui() {
     final JFrame frame = new JFrame("Config manager");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setSize(600, 400);
+    frame.setSize(600, 200);
+    frame.setResizable(false);
 
     final JMenuBar menubar = menubar();
     final JPanel buttonArea = buttonArea();
@@ -21,23 +23,45 @@ public class UserInterface {
     frame.setVisible(true);
   }
 
-  /*
-   *
-   */
+  private static JPanel config() {
+    JPanel panel = new JPanel(new FlowLayout());
+    JTextField configPath = new JTextField(App.getConfigPath(), 40);
+    JLabel label = new JLabel("Path to config dir:");
+
+    panel.add(label);
+    panel.add(configPath);
+
+    return panel;
+  }
+
+  private static JPanel accountId() {
+    JPanel panel = new JPanel(new FlowLayout());
+    JTextField textfield = new JTextField(App.getAccountID());
+    JLabel label = new JLabel("AccountID:");
+
+    panel.add(label);
+    panel.add(textfield);
+
+    return panel;
+  }
+
+  private static JPanel gameId() {
+    JPanel panel = new JPanel(new FlowLayout());
+    JTextField textfield = new JTextField(App.getGameID());
+    JLabel label = new JLabel("GameID:");
+
+    panel.add(label);
+    panel.add(textfield);
+
+    return panel;
+  }
+
   private static JPanel centerPanel() {
-    final JPanel panel = new JPanel();
-    panel.setLayout(new BorderLayout());
+    final JPanel panel = new JPanel(new FlowLayout());
 
-    final JLabel labelConfigPath =
-        new JLabel(
-            "Path to main accounts config "
-                + App.getConfigPath()
-                + "/"
-                + App.getAccountID()
-                + "/"
-                + App.getGameID());
-
-    panel.add(labelConfigPath, BorderLayout.NORTH);
+    panel.add(config());
+    panel.add(accountId());
+    panel.add(gameId());
 
     return panel;
   }
@@ -47,7 +71,7 @@ public class UserInterface {
    * manages appending information to it
    */
   private static JPanel buttonArea() {
-    JPanel panel = new JPanel();
+    final JPanel panel = new JPanel();
 
     final JButton makeBackupButton = new JButton("Make backup");
     panel.add(makeBackupButton);

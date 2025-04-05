@@ -1,7 +1,8 @@
 # README
 
 ![Build](https://github.com/perttunurmi/SteamGameConfigManager/actions/workflows/maven.yml/badge.svg)
-[Download the latest release](https://github.com/perttunurmi/game-config-manager/releases/latest)
+
+[Download the latest release here!](https://github.com/perttunurmi/game-config-manager/releases/latest)
 
 > [!WARNING]
 > Before running this software:
@@ -19,5 +20,6 @@ will you the same config.
 > [!TIP]
 > You will need the AccountID of your main account.
 > It can be found on [steamdb](https://steamdb.info/calculator/).
-> Or after 0.2 the software will automatically use the use
+>
+> After version 0.2 the software will automatically use
 > the account id which has most games

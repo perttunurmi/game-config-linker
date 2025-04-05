@@ -16,7 +16,7 @@ public class App {
   private static File[] Accounts;
 
   /*
-   * game config manager
+   * Game config linker, use the same config on multiple accounts
    * Author: Perttu Nurmi
    * License: MIT
    * GitHub: https://github.com/perttunurmi
@@ -33,17 +33,18 @@ public class App {
     boolean interactive = false;
     // boolean interactive = true; // Keep this way until expertmode or gui works
 
-    String os = System.getProperty("os.name");
+    final String os = System.getProperty("os.name");
 
     if (!os.toLowerCase().contains("win")) {
       System.out.println("Sorry this program is only supported on Windows");
-      while (true) {}
+      while (true) {
+      }
     }
 
-    // if no arguments are given start automatically  with gui
+    // if no arguments are given start automatically with gui
     if (args.length == 0) {
 
-      File config = new File(ConfigPath);
+      final File config = new File(ConfigPath);
       if (config.isDirectory()) {
 
         setAccounts();
@@ -54,7 +55,7 @@ public class App {
 
     } else {
       // check if user gave -i or --interactive as parameters
-      for (String arg : args) {
+      for (final String arg : args) {
         System.out.println(arg);
         if (arg.matches("-i") || arg.matches("--interactive")) {
           interactive = true;
@@ -86,11 +87,11 @@ public class App {
   }
 
   public static void linkConfigs() {
-    File mainAccountDirectory = new File(ConfigPath, AccountID);
+    final File mainAccountDirectory = new File(ConfigPath, AccountID);
 
     for (final File account : Accounts) {
       if (!account.getPath().contains(AccountID)) {
-        File gameConfigCopy = new File(account, GameID);
+        final File gameConfigCopy = new File(account, GameID);
 
         // Delete existing liks and folders
         if (gameConfigCopy.exists()) {
@@ -99,7 +100,7 @@ public class App {
           } else {
             try {
               BackupManager.deleteFolderRecursively(gameConfigCopy);
-            } catch (IOException error) {
+            } catch (final IOException error) {
               error.printStackTrace();
             }
           }
@@ -151,7 +152,7 @@ public class App {
     }
   }
 
-  public static void setAccounts(File[] accounts) {
+  public static void setAccounts(final File[] accounts) {
     Accounts = accounts;
   }
 
@@ -160,7 +161,8 @@ public class App {
   }
 
   /**
-   * Interactive mode is supposed to prompt user for input in the ideal case user will only need to
+   * Interactive mode is supposed to prompt user for input in the ideal case user
+   * will only need to
    * answer yes/no questions
    */
   private static void runInteractively() {
@@ -168,12 +170,15 @@ public class App {
   }
 
   /**
-   * Using this mode will allow to user to give required information as parameters good for more
-   * advanced users or if you for some reason want to use this software for scripts. Actually this
+   * Using this mode will allow to user to give required information as parameters
+   * good for more
+   * advanced users or if you for some reason want to use this software for
+   * scripts. Actually this
    * exists mainly to make testing easier!
    *
-   * @param args commandline arguments. Note: if args contain -i or --interactive we will never run
-   *     in expertmode.
+   * @param args commandline arguments. Note: if args contain -i or --interactive
+   *             we will never run
+   *             in expertmode.
    */
   private static void runInExpertMode(final String[] args) {
     ExpertMode.expertMode(args);
@@ -183,10 +188,10 @@ public class App {
       throws InvalidAccountIdException, InvalidConfigPathException, InvalidGameIdException {
     InputValidator.validateAccountId(AccountID);
 
-    File configpath = new File(ConfigPath);
+    final File configpath = new File(ConfigPath);
     InputValidator.validateAccountFolder(AccountID, ConfigPath);
 
-    File accountpath = new File(configpath, AccountID);
+    final File accountpath = new File(configpath, AccountID);
     InputValidator.validateGameId(accountpath, GameID);
   }
 }
