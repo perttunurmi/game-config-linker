@@ -23,3 +23,5 @@ will you the same config.
 >
 > After version 0.2 the software will automatically use
 > the account id which has most games
+
+![GUI](./docs/software.png)
