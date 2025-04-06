@@ -6,6 +6,15 @@ import java.awt.FlowLayout;
 import javax.swing.*;
 
 public class UserInterface {
+  private static JLabel fullpath =
+      new JLabel(
+          "Fullpath: "
+              + App.getConfigPath()
+              + "/"
+              + App.getAccountID()
+              + "/"
+              + App.getGameID()
+              + "/");
 
   public static void gui() {
     final JFrame frame = new JFrame("Config manager");
@@ -13,7 +22,7 @@ public class UserInterface {
     frame.setSize(600, 200);
     frame.setResizable(false);
 
-    final JMenuBar menubar = menubar();
+    final JPanel menubar = menubar();
     final JPanel buttonArea = buttonArea();
     final JPanel panel = centerPanel();
 
@@ -24,9 +33,23 @@ public class UserInterface {
   }
 
   private static JPanel config() {
-    JPanel panel = new JPanel(new FlowLayout());
-    JTextField configPath = new JTextField(App.getConfigPath(), 40);
-    JLabel label = new JLabel("Path to config dir:");
+    final JPanel panel = new JPanel(new FlowLayout());
+    final JTextField configPath = new JTextField(App.getConfigPath(), 40);
+    final JLabel label = new JLabel("Path to config dir:");
+
+    configPath.addActionListener(
+        e -> {
+          App.setConfigPath(configPath.getText());
+
+          fullpath.setText(
+              "Fullpath: "
+                  + App.getConfigPath()
+                  + "/"
+                  + App.getAccountID()
+                  + "/"
+                  + App.getGameID()
+                  + "/");
+        });
 
     panel.add(label);
     panel.add(configPath);
@@ -35,23 +58,48 @@ public class UserInterface {
   }
 
   private static JPanel accountId() {
-    JPanel panel = new JPanel(new FlowLayout());
-    JTextField textfield = new JTextField(App.getAccountID());
-    JLabel label = new JLabel("AccountID:");
+    final JPanel panel = new JPanel(new FlowLayout());
+    final JTextField textfield = new JTextField(App.getAccountID(), 10);
+    final JLabel label = new JLabel("AccountID:");
 
     panel.add(label);
     panel.add(textfield);
+
+    textfield.addActionListener(
+        e -> {
+          App.setAccountID(textfield.getText());
+          fullpath.setText(
+              "Fullpath: "
+                  + App.getConfigPath()
+                  + "/"
+                  + App.getAccountID()
+                  + "/"
+                  + App.getGameID()
+                  + "/");
+        });
 
     return panel;
   }
 
   private static JPanel gameId() {
-    JPanel panel = new JPanel(new FlowLayout());
-    JTextField textfield = new JTextField(App.getGameID());
-    JLabel label = new JLabel("GameID:");
+    final JPanel panel = new JPanel(new FlowLayout());
+    final JTextField textfield = new JTextField(App.getGameID(),6);
+    final JLabel label = new JLabel("GameID:");
 
     panel.add(label);
     panel.add(textfield);
+    textfield.addActionListener(
+        e -> {
+          App.setGameID(textfield.getText());
+          fullpath.setText(
+              "Fullpath: "
+                  + App.getConfigPath()
+                  + "/"
+                  + App.getAccountID()
+                  + "/"
+                  + App.getGameID()
+                  + "/");
+        });
 
     return panel;
   }
@@ -72,6 +120,10 @@ public class UserInterface {
    */
   private static JPanel buttonArea() {
     final JPanel panel = new JPanel();
+
+    final JPanel parent = new JPanel(new BorderLayout());
+    parent.add(fullpath, BorderLayout.NORTH);
+    parent.add(panel, BorderLayout.SOUTH);
 
     final JButton makeBackupButton = new JButton("Make backup");
     panel.add(makeBackupButton);
@@ -96,13 +148,15 @@ public class UserInterface {
           App.linkConfigs();
         });
 
-    return panel;
+    return parent;
   }
 
   /*
    * Creates the menubar and handless the clicks
    */
-  private static JMenuBar menubar() {
+  private static JPanel menubar() {
+    JPanel panel = new JPanel(new BorderLayout());
+
     final JMenuBar menubar = new JMenuBar();
     final JMenu menu1 = new JMenu("File");
     final JMenu menu2 = new JMenu("Help");
@@ -120,6 +174,8 @@ public class UserInterface {
 
     menu22.addActionListener(e -> {});
 
-    return menubar;
+    panel.add(menubar, BorderLayout.SOUTH);
+
+    return panel;
   }
 }
