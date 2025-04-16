@@ -37,8 +37,7 @@ public class App {
 
     if (!os.toLowerCase().contains("win")) {
       System.out.println("Sorry this program is only supported on Windows");
-      while (true) {
-      }
+      while (true) {}
     }
 
     // if no arguments are given start automatically with gui
@@ -156,13 +155,38 @@ public class App {
     Accounts = accounts;
   }
 
+  public static String[] getGameIDs() {
+    final File accountDir = new File(ConfigPath, AccountID);
+    if (!accountDir.exists() || !accountDir.isDirectory()) {
+      return new String[0];
+    }
+
+    final File[] gameDirs = accountDir.listFiles(File::isDirectory);
+    // Count how many valid game IDs we have
+    int validCount = 0;
+    for (final File gameDir : gameDirs) {
+      if (gameDir.getName().matches("^\\d+$")) {
+        validCount++;
+      }
+    }
+
+    final String[] gameIDs = new String[validCount];
+    int index = 0;
+    for (final File gameDir : gameDirs) {
+      final String name = gameDir.getName();
+      if (name.matches("^\\d+$")) {
+        gameIDs[index++] = name;
+      }
+    }
+    return gameIDs;
+  }
+
   public static void predictMainAccount() {
     AccountManager.predictMainAccount();
   }
 
   /**
-   * Interactive mode is supposed to prompt user for input in the ideal case user
-   * will only need to
+   * Interactive mode is supposed to prompt user for input in the ideal case user will only need to
    * answer yes/no questions
    */
   private static void runInteractively() {
@@ -170,15 +194,12 @@ public class App {
   }
 
   /**
-   * Using this mode will allow to user to give required information as parameters
-   * good for more
-   * advanced users or if you for some reason want to use this software for
-   * scripts. Actually this
+   * Using this mode will allow to user to give required information as parameters good for more
+   * advanced users or if you for some reason want to use this software for scripts. Actually this
    * exists mainly to make testing easier!
    *
-   * @param args commandline arguments. Note: if args contain -i or --interactive
-   *             we will never run
-   *             in expertmode.
+   * @param args commandline arguments. Note: if args contain -i or --interactive we will never run
+   *     in expertmode.
    */
   private static void runInExpertMode(final String[] args) {
     ExpertMode.expertMode(args);

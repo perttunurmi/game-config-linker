@@ -10,7 +10,7 @@ public class AccountManager {
   /*
    * Find all subdirectories(accounts) in the userdata folder
    */
-  public static File[] getAllAccounts(String configPath)
+  public static File[] getAllAccounts(final String configPath)
       throws InvalidConfigPathException, InvalidAccountIdException {
 
     final File config = new File(configPath);
@@ -20,14 +20,14 @@ public class AccountManager {
           "Directory " + config + " doesn't exist or is not a directory");
     }
 
-    List<File> accounts = new ArrayList<File>();
+    final List<File> accounts = new ArrayList<File>();
     for (final File account : config.listFiles()) {
       if (!account.toString().contains(".")) {
         accounts.add(account);
       }
     }
 
-    File[] accArr = new File[accounts.size()];
+    final File[] accArr = new File[accounts.size()];
     accounts.toArray(accArr);
 
     App.setAccounts(accArr);
@@ -39,7 +39,7 @@ public class AccountManager {
    */
   public static void predictMainAccount() {
     if (App.getAccounts().length > 0) {
-      File[] accounts = App.getAccounts();
+      final File[] accounts = App.getAccounts();
       File mostLikelyMainAccount = accounts[0];
 
       for (final File account : accounts) {

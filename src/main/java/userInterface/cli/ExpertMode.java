@@ -8,13 +8,12 @@ public class ExpertMode {
   /**
    * Allows user to enter config path and accountid as arguments
    *
-   * @param args       Command line arguments
+   * @param args Command line arguments
    * @param configPath path to steam userdata folder
    */
   public static void expertMode(final String args[]) {
     System.out.println("expertmode");
-    while (true) {
-    }
+    while (true) {}
     // ConfigPath = configPath;
     // AccountID = args[0];
     //
@@ -50,6 +49,5 @@ public class ExpertMode {
   }
 
   // TODO: Lista 2-tuplia???
-  private static void seperateArgumentsAndParameters(final String args[]) {
-  }
+  private static void seperateArgumentsAndParameters(final String args[]) {}
 }

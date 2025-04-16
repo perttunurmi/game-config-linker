@@ -3,6 +3,7 @@ package userInterface.gui;
 import configManager.App;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.io.File;
 import javax.swing.*;
 
 public class UserInterface {
@@ -10,11 +11,11 @@ public class UserInterface {
       new JLabel(
           "Fullpath: "
               + App.getConfigPath()
-              + "/"
+              + "\\"
               + App.getAccountID()
-              + "/"
+              + "\\"
               + App.getGameID()
-              + "/");
+              + "\\");
 
   public static void gui() {
     final JFrame frame = new JFrame("Config manager");
@@ -34,48 +35,71 @@ public class UserInterface {
 
   private static JPanel config() {
     final JPanel panel = new JPanel(new FlowLayout());
-    final JTextField configPath = new JTextField(App.getConfigPath(), 40);
     final JLabel label = new JLabel("Path to config dir:");
+    final JButton chooseButton = new JButton("Choose Directory");
+    final JLabel pathLabel = new JLabel(App.getConfigPath());
 
-    configPath.addActionListener(
+    chooseButton.addActionListener(
         e -> {
-          App.setConfigPath(configPath.getText());
+          final JFileChooser chooser = new JFileChooser();
+          chooser.setCurrentDirectory(new File(App.getConfigPath()));
+          chooser.setDialogTitle("Select Steam userdata directory");
+          chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+          chooser.setAcceptAllFileFilterUsed(false);
 
-          fullpath.setText(
-              "Fullpath: "
-                  + App.getConfigPath()
-                  + "/"
-                  + App.getAccountID()
-                  + "/"
-                  + App.getGameID()
-                  + "/");
+          if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            final String newPath = chooser.getSelectedFile().getAbsolutePath();
+            App.setConfigPath(newPath);
+            pathLabel.setText(newPath);
+            fullpath.setText(
+                "Fullpath: "
+                    + App.getConfigPath()
+                    + "\\"
+                    + App.getAccountID()
+                    + "\\"
+                    + App.getGameID()
+                    + "\\");
+          }
         });
 
     panel.add(label);
-    panel.add(configPath);
+    panel.add(pathLabel);
+    panel.add(chooseButton);
 
     return panel;
   }
 
   private static JPanel accountId() {
     final JPanel panel = new JPanel(new FlowLayout());
-    final JTextField textfield = new JTextField(App.getAccountID(), 10);
+    final JComboBox<String> comboBox = new JComboBox<>();
     final JLabel label = new JLabel("AccountID:");
 
-    panel.add(label);
-    panel.add(textfield);
+    // Populate the combo box with account IDs
+    final File[] accounts = App.getAccounts();
+    for (final File account : accounts) {
+      comboBox.addItem(account.getName());
+    }
 
-    textfield.addActionListener(
+    // Set the selected item to current account ID if it exists
+    final String currentAccountId = App.getAccountID();
+    if (currentAccountId != null && !currentAccountId.isEmpty()) {
+      comboBox.setSelectedItem(currentAccountId);
+    }
+
+    panel.add(label);
+    panel.add(comboBox);
+
+    comboBox.addActionListener(
         e -> {
-          App.setAccountID(textfield.getText());
+          App.setAccountID((String) comboBox.getSelectedItem());
           fullpath.setText(
               "Fullpath: "
                   + App.getConfigPath()
-                  + "/"
+                  + "\\"
                   + App.getAccountID()
-                  + "/"
+                  + "\\"
                   + App.getGameID()
-                  + "/");
+                  + "\\");
         });
 
     return panel;
@@ -83,22 +107,35 @@ public class UserInterface {
 
   private static JPanel gameId() {
     final JPanel panel = new JPanel(new FlowLayout());
-    final JTextField textfield = new JTextField(App.getGameID(),6);
+    final JComboBox<String> comboBox = new JComboBox<>();
     final JLabel label = new JLabel("GameID:");
 
+    // Populate the combo box with game IDs
+    final String[] gameIDs = App.getGameIDs();
+    for (final String gameID : gameIDs) {
+      comboBox.addItem(gameID);
+    }
+
+    // Set the selected item to current game ID if it exists
+    final String currentGameId = App.getGameID();
+    if (currentGameId != null && !currentGameId.isEmpty()) {
+      comboBox.setSelectedItem(currentGameId);
+    }
+
     panel.add(label);
-    panel.add(textfield);
-    textfield.addActionListener(
+    panel.add(comboBox);
+
+    comboBox.addActionListener(
         e -> {
-          App.setGameID(textfield.getText());
+          App.setGameID((String) comboBox.getSelectedItem());
           fullpath.setText(
               "Fullpath: "
                   + App.getConfigPath()
-                  + "/"
+                  + "\\"
                   + App.getAccountID()
-                  + "/"
+                  + "\\"
                   + App.getGameID()
-                  + "/");
+                  + "\\");
         });
 
     return panel;
@@ -155,7 +192,7 @@ public class UserInterface {
    * Creates the menubar and handless the clicks
    */
   private static JPanel menubar() {
-    JPanel panel = new JPanel(new BorderLayout());
+    final JPanel panel = new JPanel(new BorderLayout());
 
     final JMenuBar menubar = new JMenuBar();
     final JMenu menu1 = new JMenu("File");
@@ -179,3 +216,4 @@ public class UserInterface {
     return panel;
   }
 }
+
