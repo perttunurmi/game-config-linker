@@ -2,9 +2,12 @@ package configManager;
 
 import java.io.File;
 import java.io.IOException;
-import userInterface.cli.*;
-import userInterface.gui.*;
-import utils.*;
+import userInterface.cli.InteractiveMode;
+import userInterface.gui.UserInterface;
+import utils.InputValidator;
+import utils.InvalidAccountIdException;
+import utils.InvalidConfigPathException;
+import utils.InvalidGameIdException;
 
 /** - TODO: configpath, accountid and gameid */
 
@@ -30,8 +33,7 @@ public class App {
    * @param args commandline arguments
    */
   public static void main(final String[] args) {
-    boolean interactive = false;
-    // boolean interactive = true; // Keep this way until expertmode or gui works
+    // boolean interactive = false;
 
     final String os = System.getProperty("os.name");
 
@@ -57,15 +59,9 @@ public class App {
       for (final String arg : args) {
         System.out.println(arg);
         if (arg.matches("-i") || arg.matches("--interactive")) {
-          interactive = true;
+          runInteractively();
         }
       }
-    }
-
-    if (interactive == true) {
-      runInteractively();
-    } else {
-      runInExpertMode(args);
     }
   }
 
@@ -191,18 +187,6 @@ public class App {
    */
   private static void runInteractively() {
     InteractiveMode.interactiveMode();
-  }
-
-  /**
-   * Using this mode will allow to user to give required information as parameters good for more
-   * advanced users or if you for some reason want to use this software for scripts. Actually this
-   * exists mainly to make testing easier!
-   *
-   * @param args commandline arguments. Note: if args contain -i or --interactive we will never run
-   *     in expertmode.
-   */
-  private static void runInExpertMode(final String[] args) {
-    ExpertMode.expertMode(args);
   }
 
   private static void runValidators()
