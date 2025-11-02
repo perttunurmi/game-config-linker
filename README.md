@@ -15,7 +15,7 @@
 >   (by default) just in case
 
 Links your Counter-Strike config folders so that all your accounts
-will you the same config.
+will use the same config.
 
 > [!TIP]
 > You will need the AccountID of your main account.
